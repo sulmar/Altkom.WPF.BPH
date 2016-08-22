@@ -1,0 +1,41 @@
+﻿<Page
+    x:Class="Altkom.RentBike.UWPClient.Views.StationsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Altkom.RentBike.UWPClient.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Altkom.RentBike.ViewModels"
+    mc:Ignorable="d">
+
+    <Page.DataContext>
+        <vm:StationsViewModel />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <DataTemplate x:Key="StationTemplate">
+            <StackPanel>
+                <TextBlock Text="{Binding Number}" />
+                <TextBlock Text="{Binding Name}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+    
+    
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <!--<StackPanel Orientation="Horizontal">
+            <Button>Add</Button>
+            <Button>Update</Button>
+            <Button>Remove</Button>
+        </StackPanel>-->
+
+        <ListBox ItemsSource="{Binding Stations}"
+                 ItemTemplate="{StaticResource StationTemplate}"
+                 >
+            
+        </ListBox>
+        
+    </Grid>
+</Page>

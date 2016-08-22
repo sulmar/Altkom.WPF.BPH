@@ -1,0 +1,108 @@
+﻿<Window x:Class="Altkom.RentBike.WPFClient.Views.StationsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Altkom.RentBike.WPFClient.Views"
+        xmlns:vm="clr-namespace:Altkom.RentBike.ViewModels;assembly=Altkom.RentBike.ViewModels"
+        xmlns:c="clr-namespace:Altkom.RentBike.WPFClient.Converters"
+        xmlns:map="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+        xmlns:m="clr-namespace:Altkom.RentBike.WPFClient.MarkupExtensions"
+        mc:Ignorable="d"
+        Loaded="{m:EventToCommand AsyncLoadCommand}"
+        Title="StationsView" Height="300" Width="300">
+
+    <Window.DataContext>
+        <vm:StationsViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <c:GpsConverter x:Key="GpsConverter" />
+
+        <DataTemplate x:Key="StationPushpinTemplate">
+            <map:Pushpin
+                map:MapLayer.Position="{Binding Location, Converter={c:LocationConverter}}" />
+        </DataTemplate>
+        
+    </Window.Resources>
+    
+    <Grid>
+
+        <DockPanel>
+
+            <!-- Header -->
+            <StackPanel                
+                DockPanel.Dock="Top"
+                Orientation="Horizontal">
+                <Button>Add</Button>
+                <Button Command="{Binding UpdateStationCommand}">Update</Button>
+                <Button>Remove</Button>
+
+                <TextBlock Text="{m:CurrentDate}" />
+            </StackPanel>
+
+            <!-- Content -->
+            <DockPanel>
+
+                <ListBox ItemsSource="{Binding Stations}"
+                         SelectedItem="{Binding SelectedStation}"
+                         ItemTemplate="{StaticResource StationTemplate}"
+                         Width="150"
+                         >
+
+                 
+
+                </ListBox>
+
+
+                <ListBox ItemsSource="{Binding Stations}"
+                         SelectedItem="{Binding SelectedStation}"
+                         >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Capacity}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+
+                <!-- Content -->
+                
+                <StackPanel DataContext="{Binding SelectedStation}">
+                    <TextBox Text="{Binding Number, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Text="{Binding Path=Name}" />
+                    <TextBox Name="TextBoxCapacity" Text="{Binding Capacity}" />
+                    <Slider Minimum="0" Maximum="100" Value="{Binding ElementName=TextBoxCapacity, Path=Text}"
+                            IsSnapToTickEnabled="True"
+                            TickFrequency="1" />
+                    <TextBox Text="{Binding Path=Address}" />
+                    <TextBox Text="{Binding Location.Latitude}" />
+                    <TextBox Text="{Binding Location.Longitude}" />
+                    <TextBox Text="{Binding Location, Converter={StaticResource GpsConverter}}" />
+                    <TextBox Text="{Binding Location, Converter={c:GpsConverter}}" />
+                    <TextBlock Text="{Binding FullName}" />
+                </StackPanel>
+
+
+                <map:Map 
+                    CredentialsProvider="INSERT_YOUR_BING_MAPS_KEY"
+                    Center="54.4, 18.6" 
+                    ZoomLevel="12">
+
+                    <map:MapItemsControl 
+                        ItemsSource="{Binding Stations}"
+                        ItemTemplate="{StaticResource StationPushpinTemplate}"
+                        
+                        />
+
+                </map:Map>
+                
+                
+            </DockPanel>
+
+        </DockPanel>
+
+       
+        
+    </Grid>
+</Window>

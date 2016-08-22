@@ -1,0 +1,27 @@
+﻿<Page
+    x:Class="Altkom.RentBike.UWPClient.Views.BikesView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Altkom.RentBike.UWPClient.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Altkom.RentBike.Models"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <DataTemplate x:Key="BikeTemplate"  x:DataType="model:Bike" >
+            <StackPanel>
+                <TextBlock Text="{x:Bind Model}" />
+                <TextBlock Text="{x:Bind Number}" />
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <ListBox ItemsSource="{x:Bind ViewModel.Bikes}"
+                 ItemTemplate="{StaticResource BikeTemplate}"
+                 />
+
+    </Grid>
+</Page>
